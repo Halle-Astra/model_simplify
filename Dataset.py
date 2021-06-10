@@ -14,9 +14,18 @@ class ModelNet10():
     def read_file(self,filename):
         with open(filename) as f :
             t = f.read()
-            t = t.split()
-            t = 
+            t = t.split('\n')
+            vertex_num, face_num, edge_num = np.array(t[1], dtype = np.float)
+            
+            if t[0].strip().lower() != 'off' or edge_num != 0:
+                return [None,None]
+            
+            data = np.array(t[2:],dtype = np.float)
+            v = data[:vertex_num]
+            f = data[-face_num:]
+        return v,f
 
 
 conf = get_conf()
 modelnet10 = ModelNet10(conf)
+print(modelnet10.readfile('/data/sda/ModelNet10/night_stand/train/night_stand_0160.off'))
